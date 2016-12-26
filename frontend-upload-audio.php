@@ -24,12 +24,44 @@ class Frontend_Upload_Audio {
 	 * Class constructor.
 	 */
 	public function __construct() {
+		add_action( 'init',               array( $this, 'media_upload' ) );
 		add_shortcode( 'upload_audio',    array( $this, 'form' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
 	}
 
+function media_upload() {
+/*
+name
+type
+tmp_name
+*/
+
+	$name = sanitize_title( $_FILES[ 'file' ][ 'name' ] );
+
+	// These files need to be included as dependencies when on the front end.
+	require_once( ABSPATH . 'wp-admin/includes/image.php' );
+	require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	require_once( ABSPATH . 'wp-admin/includes/media.php' );
+	
+	// Let WordPress handle the upload.
+	// Remember, 'my_image_upload' is the name of our file input in our form above.
+	$attachment_id = media_handle_upload( $name, $_POST['post_id'] );
+
+	if ( is_wp_error( $attachment_id ) ) {
+		// There was an error uploading the image.
+	} else {
+		// The image was uploaded successfully!
+	}
+
+	file_put_contents( '/home/ryan/nginx/arousingaudio.com/public_html/wp-content/plugins/frontend-upload-audio/temp.txt', print_r( $_FILES, true ) );
+
+}
+
+	/**
+	 * The forms HTML.
+	 */
 	public function form() {
-//echo plugin_dir_url( __FILE__ ) . 'uploader.html';die;
+
 		$content = file_get_contents( dirname( __FILE__ ) . '/uploader.html' );
 
 		return $content;

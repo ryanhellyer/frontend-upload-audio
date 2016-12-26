@@ -1,12 +1,4 @@
 Array
 (
-    [file] => Array
-        (
-            [name] => aggressive-sara.jpg
-            [type] => image/jpeg
-            [tmp_name] => /tmp/phpk46e7A
-            [error] => 0
-            [size] => 470973
-        )
-
+    [] => 
 )
