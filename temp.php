@@ -1,6 +1,6 @@
 <?php
 
-file_put_contents( '/home/ryan/nginx/arousingaudio.com/public_html/wp-content/plugins/frontend-upload-audio/temp.txt', print_r( $_FILES, true ) );
+//file_put_contents( '/home/ryan/nginx/arousingaudio.com/public_html/wp-content/plugins/frontend-upload-audio/temp.txt', print_r( $_FILES, true ) );
 
 /*
 // These files need to be included as dependencies when on the front end.

@@ -24,38 +24,40 @@ class Frontend_Upload_Audio {
 	 * Class constructor.
 	 */
 	public function __construct() {
+
 		add_action( 'init',               array( $this, 'media_upload' ) );
 		add_shortcode( 'upload_audio',    array( $this, 'form' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
+
 	}
 
-function media_upload() {
-/*
-name
-type
-tmp_name
-*/
+	/**
+	 * Uploading the content into WordPress.
+	 */
+	public function media_upload() {
 
-	$name = sanitize_title( $_FILES[ 'file' ][ 'name' ] );
+		// Load WordPress file handling tools
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		}
 
-	// These files need to be included as dependencies when on the front end.
-	require_once( ABSPATH . 'wp-admin/includes/image.php' );
-	require_once( ABSPATH . 'wp-admin/includes/file.php' );
-	require_once( ABSPATH . 'wp-admin/includes/media.php' );
-	
-	// Let WordPress handle the upload.
-	// Remember, 'my_image_upload' is the name of our file input in our form above.
-	$attachment_id = media_handle_upload( $name, $_POST['post_id'] );
+		$uploadedfile = $_FILES['file'];
+		$upload_overrides = array(
+			'test_form' => false
+		);
+		$movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
 
-	if ( is_wp_error( $attachment_id ) ) {
-		// There was an error uploading the image.
-	} else {
-		// The image was uploaded successfully!
+		if ( $movefile && ! isset( $movefile['error'] ) ) {
+
+			$this->create_audio_post( $movefile );
+			file_put_contents( '/home/ryan/nginx/arousingaudio.com/public_html/wp-content/plugins/frontend-upload-audio/temp.txt', print_r( $movefile, true ) );
+
+		} else {
+			file_put_contents( '/home/ryan/nginx/arousingaudio.com/public_html/wp-content/plugins/frontend-upload-audio/temp.txt', 'ERROR: ' . print_r( $_FILES, true ) );
+		}
+
+		return;
 	}
-
-	file_put_contents( '/home/ryan/nginx/arousingaudio.com/public_html/wp-content/plugins/frontend-upload-audio/temp.txt', print_r( $_FILES, true ) );
-
-}
 
 	/**
 	 * The forms HTML.

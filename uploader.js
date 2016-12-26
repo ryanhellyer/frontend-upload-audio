@@ -35,7 +35,7 @@ function Frontend_Audio_Uploader() {
 		// now post a new XHR request
 		if (tests.formdata) {
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', 'http://arousingaudio.com/wp-content/plugins/frontend-upload-audio/temp.php');
+			xhr.open('POST', home_url );
 			xhr.onload = function() {
 				progress.value = progress.innerHTML = 100;
 			};
