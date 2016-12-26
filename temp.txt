@@ -1,6 +1,0 @@
-Array
-(
-    [file] => /home/ryan/nginx/arousingaudio.com/public_html/audio//4-clermiston-ave.jpg
-    [url] => http://arousingaudio.com/audio/4-clermiston-ave.jpg
-    [type] => image/jpeg
-)
